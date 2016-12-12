@@ -1,0 +1,56 @@
+- name: Install packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - chromium
+    - firefox
+    - java-1.8.0-openjdk
+
+- name: Create selenium user
+  user:
+    name: selenium
+    home: /opt/selenium
+    createhome: yes
+
+- name: Download server jar
+  get_url:
+    url: "{{ selenium_server_pkg_url }}"
+    dest: /opt/selenium/server.jar
+    owner: selenium
+
+- name: Unpack chromedriver package
+  unarchive:
+    src: "{{ selenium_chromedriver_pkg_url }}"
+    dest: /opt/selenium
+    copy: no
+    owner: selenium
+    creates: /opt/selenium/chromedriver
+
+- name: Unpack phantomjs package
+  unarchive:
+    src: "{{ selenium_phantomjs_pkg_url }}"
+    dest: /opt/selenium
+    copy: no
+    owner: selenium
+    creates: /opt/selenium/chromedriver
+
+- name: Ensure chromedriver is executable
+  file:
+    path: /opt/selenium/chromedriver
+    mode: 0770
+
+- name: Install selenium service file
+  copy:
+    src: selenium.service
+    dest: /etc/systemd/system/selenium.service
+    mode: 0755
+  register: service_file
+
+- name: Reload daemon
+  command: /bin/systemctl daemon-reload
+  when: service_file.changed is defined and service_file.changed
+  notify: Restart selenium server
+
+- name: Start and enable selenium server
+  service: name=selenium state=started enabled=yes

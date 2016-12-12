@@ -1,0 +1,13 @@
+dependencies: []
+galaxy_info:
+  author: Filip Sobalski
+  company: creativestyle
+  description: Install selenium
+  license: MIT
+  min_ansible_version: 1.9
+  galaxy_tags:
+    - selenium
+  platforms:
+    - name: EL
+      versions:
+        - 7

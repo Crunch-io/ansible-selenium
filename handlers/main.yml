@@ -1,0 +1,4 @@
+- name: Restart selenium server
+  service:
+    name: selenium
+    state: restarted

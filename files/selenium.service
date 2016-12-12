@@ -1,0 +1,16 @@
+[Unit]
+Description=Selenium server
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/java -jar server.jar
+KillMode=process
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+User=selenium
+WorkingDirectory=/opt/selenium
+
+[Install]
+WantedBy=multi-user.target
