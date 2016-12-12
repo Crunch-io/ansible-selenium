@@ -11,6 +11,7 @@ StandardOutput=syslog
 StandardError=syslog
 User=selenium
 WorkingDirectory=/opt/selenium
+Environment=PATH=/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/opt/selenium
 
 [Install]
 WantedBy=multi-user.target

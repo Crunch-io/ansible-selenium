@@ -33,7 +33,7 @@
     dest: /opt/selenium
     copy: no
     owner: selenium
-    creates: /opt/selenium/chromedriver
+
 
 - name: Ensure chromedriver is executable
   file:
