@@ -6,6 +6,7 @@
     - chromium
     - firefox
     - java-1.8.0-openjdk
+    - bzip2
 
 - name: Create selenium user
   user:
