@@ -1,12 +1,12 @@
 - name: Install packages
   yum:
-    name: "{{ item }}"
     state: present
-  with_items:
+    name:
     - chromium
     - firefox
     - java-1.8.0-openjdk
     - bzip2
+    - unzip
 
 - name: Create selenium user
   user:
@@ -34,7 +34,7 @@
     dest: /opt/selenium
     copy: no
     owner: selenium
-
+  when: phantomjs
 
 - name: Ensure chromedriver is executable
   file:
@@ -48,10 +48,6 @@
     mode: 0755
   register: service_file
 
-- name: Reload daemon
-  command: /bin/systemctl daemon-reload
-  when: service_file.changed is defined and service_file.changed
-  notify: Restart selenium server
-
 - name: Start and enable selenium server
-  service: name=selenium state=started enabled=yes
+  systemd: name=selenium state=started enabled=yes daemon_reload=True
+  when: service_file.changed
